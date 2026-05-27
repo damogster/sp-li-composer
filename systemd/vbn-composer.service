@@ -1,0 +1,16 @@
+[Unit]
+Description=VBN LinkedIn Composer
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/vbn-composer
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+EnvironmentFile=/home/pi/vbn-composer/.env.local
+
+[Install]
+WantedBy=multi-user.target
