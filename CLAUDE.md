@@ -1,4 +1,4 @@
-# VBN LinkedIn Composer — Claude Code Briefing
+# SP-LI Composer — Claude Code Briefing
 
 ## What this is
 LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool, not public-facing.
@@ -13,7 +13,7 @@ LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool,
 ## Deployment target
 - Raspberry Pi `rpiot03` (Tailscale hostname)
 - Served via Cloudflare tunnel → `composer.spintelligence.org`
-- systemd service: `vbn-composer`
+- systemd service: `sp-li-composer`
 
 ## Key files
 - `lib/db.ts` — SQLite singleton, schema auto-init on first run
@@ -21,7 +21,7 @@ LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool,
 - `lib/unicode.ts` — Unicode bold/italic conversion for LinkedIn
 - `components/Composer.tsx` — main editor component
 - `components/ContactSearch.tsx` — HubSpot live search + pin management
-- `systemd/vbn-composer.service` — Pi service file
+- `systemd/sp-li-composer.service` — Pi service file
 
 ## Environment variables (.env.local)
 - `HUBSPOT_TOKEN` — HubSpot Private App token (scope: crm.objects.contacts.read)
@@ -33,7 +33,7 @@ npm run build
 npm start          # production, port 3003
 
 ## Pi deploy
-git pull && npm install && npm run build && sudo systemctl restart vbn-composer
+git pull && npm install && npm run build && sudo systemctl restart sp-li-composer
 
 ## Owners
 - Shaun Scallan (shaunscallan / damogster)
