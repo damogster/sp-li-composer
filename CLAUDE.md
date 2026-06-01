@@ -11,9 +11,11 @@ LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool,
 - Port 3003
 
 ## Deployment target
-- Raspberry Pi `rpiot03` (Tailscale hostname)
-- Served via Cloudflare tunnel → `composer.spintelligence.org`
-- systemd service: `sp-li-composer`
+- Mac (primary): runs as a launchd service, starts on login
+  - plist: `~/Library/LaunchAgents/org.spintelligence.sp-li-composer.plist`
+  - logs: `/tmp/sp-li-composer.log`
+- Raspberry Pi `rpiot03` (Tailscale hostname) — not currently in use
+  - systemd service: `sp-li-composer`
 
 ## Key files
 - `lib/db.ts` — SQLite singleton, schema auto-init on first run
@@ -32,7 +34,11 @@ npm run dev        # port 3003
 npm run build
 npm start          # production, port 3003
 
-## Pi deploy
+## Mac deploy (after pulling changes)
+npm install && npm run build
+launchctl kickstart -k gui/$(id -u)/org.spintelligence.sp-li-composer
+
+## Pi deploy (not currently in use)
 git pull && npm install && npm run build && sudo systemctl restart sp-li-composer
 
 ## Owners
