@@ -89,6 +89,14 @@ export default function Home() {
             </div>
             <span className="text-sm font-medium text-gray-700">LinkedIn Composer</span>
           </div>
+          <a
+            href="http://localhost:3004"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 hover:text-vbn-green transition-colors font-mono tracking-wide border border-gray-200 hover:border-vbn-green rounded px-2 py-0.5"
+          >
+            Content Orchestrator ↗
+          </a>
           {activeDraft && (
             <span className="text-xs text-gray-400 ml-auto">
               Saved {new Date(activeDraft.updated_at).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}
