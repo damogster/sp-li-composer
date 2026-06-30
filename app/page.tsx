@@ -90,7 +90,7 @@ export default function Home() {
             <span className="text-sm font-medium text-gray-700">LinkedIn Composer</span>
           </div>
           <a
-            href="http://localhost:3004"
+            href="http://100.103.100.63:3004"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-gray-400 hover:text-vbn-green transition-colors font-mono tracking-wide border border-gray-200 hover:border-vbn-green rounded px-2 py-0.5"
