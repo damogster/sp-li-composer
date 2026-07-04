@@ -11,11 +11,13 @@ LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool,
 - Port 3003
 
 ## Deployment target
-- Mac (primary): runs as a launchd service, starts on login
+- **Mac only**: launchd service, starts on login — `http://100.112.135.65:3003`
   - plist: `~/Library/LaunchAgents/org.spintelligence.sp-li-composer.plist`
   - logs: `/tmp/sp-li-composer.log`
-- Raspberry Pi `rpiot03` (Tailscale hostname) — not currently in use
-  - systemd service: `sp-li-composer`
+- Raspberry Pi — not deployed
+
+## Linked tools
+- Content Orchestrator (vbn-composer) — Pi: `http://100.103.100.63:3004`
 
 ## Key files
 - `lib/db.ts` — SQLite singleton, schema auto-init on first run
