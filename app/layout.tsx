@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'VBN Composer',
-  description: 'LinkedIn post composer for the Victorian Bioenergy Network',
+  title: 'SP-LI Composer',
+  description: 'LinkedIn post composer with Unicode formatting and HubSpot contact search',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

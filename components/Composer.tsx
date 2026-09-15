@@ -9,7 +9,7 @@ import { Draft } from '@/app/page'
 const EmojiPicker = dynamic(() => import('./EmojiPicker'), { ssr: false })
 
 const DEFAULT_HASHTAGS = [
-  '#bioenergy', '#biomethane', '#biogas', '#VBN', '#circulareconomy',
+  '#bioenergy', '#biomethane', '#biogas', '#circulareconomy',
   '#renewableenergy', '#sustainableenergy', '#organicwaste', '#SAF',
   '#wastereduction', '#greenenergy', '#netzero', '#victoria',
   '#cleanenergy', '#energytransition',
@@ -182,7 +182,7 @@ export default function Composer({ draft, onSave }: Props) {
           <div className="w-px h-5 bg-gray-200 mx-0.5"/>
           <button
             onClick={() => setShowEmoji(o => !o)}
-            className={`btn-secondary py-1 px-2 text-xs ${showEmoji ? 'bg-vbn-green-light border-vbn-green text-vbn-green' : ''}`}
+            className={`btn-secondary py-1 px-2 text-xs ${showEmoji ? 'bg-brand-green-light border-brand-green text-brand-green' : ''}`}
           >
             😊 Emoji
           </button>
@@ -202,7 +202,7 @@ export default function Composer({ draft, onSave }: Props) {
               key={t}
               onClick={() => setTab(t)}
               className={`px-3 py-1.5 text-xs font-medium capitalize border-b-2 transition-colors -mb-px
-                ${tab === t ? 'border-vbn-green text-vbn-green' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                ${tab === t ? 'border-brand-green text-brand-green' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
             >
               {t}
             </button>
@@ -214,7 +214,7 @@ export default function Composer({ draft, onSave }: Props) {
           <textarea
             ref={editorRef}
             className="input resize-none flex-1 min-h-[280px] font-mono text-sm leading-relaxed"
-            placeholder={`Write your VBN post here...\n\nTip: Select text then click B or I to apply Unicode formatting that works in LinkedIn.`}
+            placeholder={`Write your post here...\n\nTip: Select text then click B or I to apply Unicode formatting that works in LinkedIn.`}
             value={body}
             onChange={e => setBody(e.target.value)}
             onBlur={e => { lastCursorRef.current = e.target.selectionStart }}
@@ -223,12 +223,13 @@ export default function Composer({ draft, onSave }: Props) {
           <div className="flex-1 min-h-[280px] card overflow-auto">
             {/* LinkedIn mock header */}
             <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-100">
-              <div className="w-9 h-9 rounded-full bg-vbn-green flex items-center justify-center">
-                <span className="text-white text-[10px] font-bold">VBN</span>
+              <div className="w-9 h-9 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="" className="w-6 h-6 object-contain" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-800">Victorian Bioenergy Network</p>
-                <p className="text-xs text-gray-400">Industry association · Just now</p>
+                <p className="text-sm font-semibold text-gray-800">Your Page</p>
+                <p className="text-xs text-gray-400">Just now</p>
               </div>
             </div>
             <pre className="whitespace-pre-wrap text-sm leading-relaxed text-gray-800 font-sans">
@@ -266,8 +267,8 @@ export default function Composer({ draft, onSave }: Props) {
                 onClick={() => toggleTag(tag)}
                 className={`px-2.5 py-1 rounded-full text-xs border transition-colors
                   ${selectedTags.has(tag)
-                    ? 'bg-vbn-green text-white border-vbn-green'
-                    : 'bg-vbn-green-light text-vbn-green border-green-200 hover:bg-green-100'}`}
+                    ? 'bg-brand-green text-white border-brand-green'
+                    : 'bg-brand-green-light text-brand-green border-green-200 hover:bg-green-100'}`}
               >
                 {tag}
               </button>

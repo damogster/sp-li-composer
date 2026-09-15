@@ -59,7 +59,7 @@ function initSchema(db: Database.Database) {
     INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)
   `)
   setDefault.run('default_hashtags', JSON.stringify([
-    '#bioenergy', '#biomethane', '#biogas', '#VBN', '#circulareconomy',
+    '#bioenergy', '#biomethane', '#biogas', '#circulareconomy',
     '#renewableenergy', '#sustainableenergy', '#organicwaste',
     '#netzero', '#victoria', '#cleanenergy', '#energytransition'
   ]))

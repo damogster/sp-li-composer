@@ -1,7 +1,7 @@
 # SP-LI Composer — Claude Code Briefing
 
 ## What this is
-LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool, not public-facing.
+LinkedIn post composer for Shaun Scallan — Unicode bold/italic formatting, hook templates, HubSpot contact search for @mentions, and draft saving. Internal tool, not public-facing; used across Shaun's personal, VBN, and SP Intelligence LinkedIn voices, not tied to any one of them.
 
 ## Stack
 - Next.js 14 (App Router, TypeScript)
@@ -17,7 +17,7 @@ LinkedIn post composer for the Victorian Bioenergy Network (VBN). Internal tool,
 - Raspberry Pi — not deployed
 
 ## Linked tools
-- Content Orchestrator (vbn-composer) — spintelligence001 (CM5): `http://spintelligence001:3004`
+- Content Orchestrator (sp-composer) — spintelligence001 (CM5): `http://spintelligence001:3004`
 
 ## Key files
 - `lib/db.ts` — SQLite singleton, schema auto-init on first run

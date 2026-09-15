@@ -26,10 +26,10 @@ export default function DraftManager({ drafts, activeDraft, onSelect, onNew, onD
             key={d.id}
             onClick={() => onSelect(d)}
             className={`group flex items-start justify-between px-3 py-2.5 cursor-pointer rounded-lg mx-1 my-0.5 transition-colors
-              ${activeDraft?.id === d.id ? 'bg-vbn-green-light' : 'hover:bg-gray-50'}`}
+              ${activeDraft?.id === d.id ? 'bg-brand-green-light' : 'hover:bg-gray-50'}`}
           >
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-medium truncate ${activeDraft?.id === d.id ? 'text-vbn-green' : 'text-gray-800'}`}>
+              <p className={`text-sm font-medium truncate ${activeDraft?.id === d.id ? 'text-brand-green' : 'text-gray-800'}`}>
                 {d.title || 'Untitled'}
               </p>
               <p className="text-[11px] text-gray-400 truncate mt-0.5">

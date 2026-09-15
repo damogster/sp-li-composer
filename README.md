@@ -1,6 +1,7 @@
-# VBN LinkedIn Composer
+# SP-LI Composer
 
-LinkedIn post composer for the Victorian Bioenergy Network. Runs on Raspberry Pi, served via Cloudflare tunnel.
+LinkedIn post composer for Shaun Scallan. Internal tool, not public-facing — used across Shaun's
+personal, VBN, and SP Intelligence LinkedIn voices, not tied to any one of them.
 
 ## Features
 
@@ -9,48 +10,33 @@ LinkedIn post composer for the Victorian Bioenergy Network. Runs on Raspberry Pi
 - Emoji picker
 - Live HubSpot contact search with SQLite caching
 - Pin/unpin contacts for quick @mention insertion
-- Draft saving (SQLite, persisted on Pi)
+- Draft saving (SQLite)
 - LinkedIn-style preview
 - First comment field + hashtag selector
 
 ## Stack
 
-- Next.js 14 (App Router)
+- Next.js 15 (App Router, TypeScript)
 - SQLite via `better-sqlite3`
 - HubSpot CRM API (Private App token)
 - Tailwind CSS
 - Port 3003
-- Cloudflare tunnel → `composer.spintelligence.org`
 
 ---
 
-## Setup on Pi (rpiot03)
-
-### 1. Clone the repo
+## Setup on Mac (current deployment)
 
 ```bash
-cd /home/pi
-git clone https://github.com/damogster/vbn-composer.git
-cd vbn-composer
-```
-
-### 2. Install dependencies
-
-```bash
+git clone https://github.com/damogster/sp-li-composer.git
+cd sp-li-composer
 npm install
-```
-
-### 3. Configure environment
-
-```bash
 cp .env.example .env.local
-nano .env.local
 ```
 
-Set your HubSpot Private App token:
+Set your HubSpot Private App token in `.env.local`:
 ```
 HUBSPOT_TOKEN=pat-na2-your-token-here
-DB_PATH=/home/pi/vbn-composer/composer.db
+DB_PATH=./composer.db
 ```
 
 **Getting your HubSpot token:**
@@ -58,43 +44,25 @@ DB_PATH=/home/pi/vbn-composer/composer.db
 2. Create app with scope: `crm.objects.contacts.read`
 3. Copy the token
 
-### 4. Build
-
 ```bash
 npm run build
 ```
 
-### 5. Install systemd service
+Runs as a launchd service (starts on login) at `http://localhost:3003`, via a plist already installed at
+`~/Library/LaunchAgents/org.spintelligence.sp-li-composer.plist` (not checked into this repo). Logs:
+`/tmp/sp-li-composer.log`.
+
+## Setup on Raspberry Pi (prepared, not currently deployed)
 
 ```bash
-sudo cp systemd/vbn-composer.service /etc/systemd/system/
+git clone https://github.com/damogster/sp-li-composer.git ~/sp-li-composer
+cd ~/sp-li-composer
+npm install && npm run build
+echo 'HUBSPOT_TOKEN=your-token-here' > .env.local
+sudo cp systemd/sp-li-composer.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable vbn-composer
-sudo systemctl start vbn-composer
-sudo systemctl status vbn-composer
-```
-
-### 6. Cloudflare tunnel
-
-Add a new public hostname in the Cloudflare tunnel dashboard:
-
-- **Tunnel:** `spintelligence` (UUID: `ca76f509-3b60-4443-ab9f-7c895176d0b1`)
-- **Subdomain:** `composer`
-- **Domain:** `spintelligence.org`
-- **Service:** `http://localhost:3003`
-
-Or via config file, add to `/home/pi/.cloudflared/config.yml`:
-
-```yaml
-ingress:
-  - hostname: composer.spintelligence.org
-    service: http://localhost:3003
-  # ... your existing rules
-```
-
-Then restart the tunnel:
-```bash
-sudo systemctl restart cloudflared
+sudo systemctl enable sp-li-composer
+sudo systemctl start sp-li-composer
 ```
 
 ---
@@ -118,7 +86,7 @@ Schema is auto-initialised on first run. Tables:
 
 **Backup:**
 ```bash
-cp /home/pi/vbn-composer/composer.db ~/backups/composer-$(date +%Y%m%d).db
+cp composer.db ~/backups/composer-$(date +%Y%m%d).db
 ```
 
 ---
@@ -126,9 +94,14 @@ cp /home/pi/vbn-composer/composer.db ~/backups/composer-$(date +%Y%m%d).db
 ## Updating
 
 ```bash
-cd /home/pi/vbn-composer
 git pull
 npm install
 npm run build
-sudo systemctl restart vbn-composer
+launchctl kickstart -k gui/$(id -u)/org.spintelligence.sp-li-composer   # Mac
+# or, on the Pi:
+sudo systemctl restart sp-li-composer
 ```
+
+## Owners
+- Shaun Scallan (shaunscallan / damogster)
+- SP Intelligence / Sustainability Plus Projects

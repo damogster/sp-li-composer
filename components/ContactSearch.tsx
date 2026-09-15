@@ -122,7 +122,7 @@ export default function ContactSearch({ onInsert }: Props) {
       <div>
         <div className="flex items-center justify-between mb-1">
           <span className="section-label mb-0">Pinned</span>
-          <button onClick={() => setShowAddManual(o => !o)} className="text-[10px] text-vbn-green hover:underline">
+          <button onClick={() => setShowAddManual(o => !o)} className="text-[10px] text-brand-green hover:underline">
             + Add manual
           </button>
         </div>
@@ -179,7 +179,7 @@ function ContactRow({
       </div>
       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 flex-shrink-0">
         {showPin && onPin && (
-          <button onClick={e => { e.stopPropagation(); onPin() }} className="text-gray-300 hover:text-vbn-green" title="Pin">
+          <button onClick={e => { e.stopPropagation(); onPin() }} className="text-gray-300 hover:text-brand-green" title="Pin">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"/></svg>
           </button>
         )}
@@ -188,7 +188,7 @@ function ContactRow({
             <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 3l10 10M13 3 3 13"/></svg>
           </button>
         )}
-        <span className="text-[9px] text-vbn-green font-medium">@insert</span>
+        <span className="text-[9px] text-brand-green font-medium">@insert</span>
       </div>
     </div>
   )

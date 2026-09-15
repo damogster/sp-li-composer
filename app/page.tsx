@@ -84,16 +84,15 @@ export default function Home() {
             </svg>
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded bg-vbn-green flex items-center justify-center">
-              <span className="text-white text-[8px] font-bold">VBN</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="" className="w-5 h-5 object-contain" />
             <span className="text-sm font-medium text-gray-700">LinkedIn Composer</span>
           </div>
           <a
             href="http://100.103.100.63:3004"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:text-vbn-green transition-colors font-mono tracking-wide border border-gray-200 hover:border-vbn-green rounded px-2 py-0.5"
+            className="text-xs text-gray-400 hover:text-brand-green transition-colors font-mono tracking-wide border border-gray-200 hover:border-brand-green rounded px-2 py-0.5"
           >
             Content Orchestrator ↗
           </a>

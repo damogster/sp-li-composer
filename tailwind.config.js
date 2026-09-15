@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        vbn: {
+        brand: {
           green: '#0A7A45',
           'green-dark': '#085c34',
           'green-light': '#E1F5EE',
