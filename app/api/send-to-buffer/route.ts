@@ -14,7 +14,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  const { text, channel } = body as { text?: string; channel?: string }
+  const { text, channel, image } = body as {
+    text?: string
+    channel?: string
+    image?: { dataBase64: string; filename: string; mimeType: string }
+  }
   if (!text?.trim()) {
     return NextResponse.json({ error: 'text is required' }, { status: 400 })
   }
@@ -27,7 +31,7 @@ export async function POST(req: NextRequest) {
     res = await fetch(`${SP_COMPOSER_URL}/api/buffer/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channel, text: text.trim() }),
+      body: JSON.stringify({ channel, text: text.trim(), image }),
     })
   } catch (err) {
     return NextResponse.json(

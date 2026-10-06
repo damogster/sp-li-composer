@@ -50,7 +50,9 @@ export default function Composer({ draft, onSave }: Props) {
   const [bufferChannel, setBufferChannel] = useState<'personal' | 'vbn' | 'spi'>('personal')
   const [sendingToBuffer, setSendingToBuffer] = useState(false)
   const [bufferResult, setBufferResult] = useState<{ ok: true } | { ok: false; error: string } | null>(null)
+  const [image, setImage] = useState<{ dataBase64: string; filename: string; mimeType: string; previewUrl: string } | null>(null)
   const editorRef = useRef<HTMLTextAreaElement>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
   const saveTimer = useRef<NodeJS.Timeout>()
   const lastCursorRef = useRef<number>(0)
 
@@ -157,6 +159,29 @@ export default function Composer({ draft, onSave }: Props) {
     setTimeout(() => setCopied(null), 2000)
   }
 
+  function onImageSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-selecting the same file later
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = reader.result as string
+      const dataBase64 = result.split(',')[1] || ''
+      setImage({
+        dataBase64,
+        filename: file.name,
+        mimeType: file.type || 'image/jpeg',
+        previewUrl: URL.createObjectURL(file),
+      })
+    }
+    reader.readAsDataURL(file)
+  }
+
+  function clearImage() {
+    if (image) URL.revokeObjectURL(image.previewUrl)
+    setImage(null)
+  }
+
   async function sendToBuffer() {
     setSendingToBuffer(true)
     setBufferResult(null)
@@ -164,7 +189,11 @@ export default function Composer({ draft, onSave }: Props) {
       const res = await fetch('/api/send-to-buffer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: fullPost, channel: bufferChannel }),
+        body: JSON.stringify({
+          text: fullPost,
+          channel: bufferChannel,
+          image: image ? { dataBase64: image.dataBase64, filename: image.filename, mimeType: image.mimeType } : undefined,
+        }),
       })
       const data = await res.json()
       setBufferResult(!res.ok || data.error ? { ok: false, error: data.error || 'Request failed' } : { ok: true })
@@ -295,6 +324,30 @@ export default function Composer({ draft, onSave }: Props) {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Image attachment */}
+        <div>
+          <p className="section-label">Image (optional — attached when sending to Buffer)</p>
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onImageSelected}
+          />
+          {image ? (
+            <div className="flex items-center gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image.previewUrl} alt="" className="h-16 w-16 object-cover rounded border border-gray-200" />
+              <span className="text-xs text-gray-500 truncate max-w-[160px]">{image.filename}</span>
+              <button onClick={clearImage} className="btn-ghost text-xs text-red-600">Remove</button>
+            </div>
+          ) : (
+            <button onClick={() => imageInputRef.current?.click()} className="btn-secondary text-xs">
+              📎 Attach image
+            </button>
+          )}
         </div>
 
         {/* Actions */}
