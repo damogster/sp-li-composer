@@ -8,7 +8,10 @@ app's own `/api/send-to-buffer`, which relays server-to-server to sp-composer's 
 (sp-composer is the only place in this ecosystem with real Buffer API keys; see `~/Projects/ECOSYSTEM.md`).
 Only the main post body + hashtags go to Buffer — the "first comment" field isn't sent anywhere
 automatically (Buffer's API here has no first-comment support), so that still gets copy-pasted in by hand
-after the post goes live from Buffer, same as before.
+after the post goes live from Buffer, same as before. An image can be attached too (base64, sent
+alongside the text) — sp-composer uploads it to the VBN WordPress media library first purely to get a
+public URL, since Buffer's API has no upload mechanism at all and needs a URL it can fetch from the open
+internet.
 
 ## Stack
 - Next.js 14 (App Router, TypeScript)
@@ -34,10 +37,13 @@ after the post goes live from Buffer, same as before.
 - `lib/hubspot.ts` — HubSpot search with SQLite caching
 - `lib/unicode.ts` — Unicode bold/italic conversion for LinkedIn
 - `components/Composer.tsx` — main editor component; `fullPost` (body + hashtags) is what both "Copy
-  post" and "Send to Buffer as Draft" use — the first comment is copy-only, never sent to Buffer
+  post" and "Send to Buffer as Draft" use — the first comment is copy-only, never sent to Buffer. The
+  attached-image state holds a base64 payload + a local `URL.createObjectURL` preview, not a persisted
+  field on the draft — picking a new image or reloading the page clears it
 - `components/ContactSearch.tsx` — HubSpot live search + pin management
-- `app/api/send-to-buffer/route.ts` — POST `{text, channel}`: relays to sp-composer's `/api/buffer/draft`
-  server-to-server (no CORS issue, no Buffer key here) — `channel` is `'personal' | 'vbn' | 'spi'`
+- `app/api/send-to-buffer/route.ts` — POST `{text, channel, image?: {dataBase64, filename, mimeType}}`:
+  relays to sp-composer's `/api/buffer/draft` server-to-server (no CORS issue, no Buffer key here) —
+  `channel` is `'personal' | 'vbn' | 'spi'`
 - `systemd/sp-li-composer.service` — Pi service file
 
 ## Environment variables (.env.local)
