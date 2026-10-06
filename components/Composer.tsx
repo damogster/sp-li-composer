@@ -47,6 +47,9 @@ export default function Composer({ draft, onSave }: Props) {
   const [showContacts, setShowContacts] = useState(true)
   const [tab, setTab] = useState<'compose' | 'preview'>('compose')
   const [copied, setCopied] = useState<'post' | 'comment' | null>(null)
+  const [bufferChannel, setBufferChannel] = useState<'personal' | 'vbn' | 'spi'>('personal')
+  const [sendingToBuffer, setSendingToBuffer] = useState(false)
+  const [bufferResult, setBufferResult] = useState<{ ok: true } | { ok: false; error: string } | null>(null)
   const editorRef = useRef<HTMLTextAreaElement>(null)
   const saveTimer = useRef<NodeJS.Timeout>()
   const lastCursorRef = useRef<number>(0)
@@ -152,6 +155,24 @@ export default function Composer({ draft, onSave }: Props) {
     await navigator.clipboard.writeText(text)
     setCopied(type)
     setTimeout(() => setCopied(null), 2000)
+  }
+
+  async function sendToBuffer() {
+    setSendingToBuffer(true)
+    setBufferResult(null)
+    try {
+      const res = await fetch('/api/send-to-buffer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: fullPost, channel: bufferChannel }),
+      })
+      const data = await res.json()
+      setBufferResult(!res.ok || data.error ? { ok: false, error: data.error || 'Request failed' } : { ok: true })
+    } catch (err) {
+      setBufferResult({ ok: false, error: err instanceof Error ? err.message : 'Request failed' })
+    } finally {
+      setSendingToBuffer(false)
+    }
   }
 
   return (
@@ -277,7 +298,7 @@ export default function Composer({ draft, onSave }: Props) {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-1">
+        <div className="flex flex-wrap items-center gap-2 pt-1">
           <button
             onClick={() => copyToClipboard(fullPost, 'post')}
             className="btn-primary"
@@ -292,7 +313,28 @@ export default function Composer({ draft, onSave }: Props) {
           >
             {copied === 'comment' ? '✓ Copied!' : '⎘ Copy first comment'}
           </button>
+          <div className="w-px h-5 bg-gray-200 mx-0.5"/>
+          <select
+            className="input py-1 px-2 text-xs w-auto"
+            value={bufferChannel}
+            onChange={e => setBufferChannel(e.target.value as typeof bufferChannel)}
+          >
+            <option value="personal">Shaun — Personal</option>
+            <option value="vbn">VBN</option>
+            <option value="spi">SP Intelligence</option>
+          </select>
+          <button
+            onClick={sendToBuffer}
+            className="btn-secondary"
+            disabled={!fullPost || sendingToBuffer}
+            title="Sends the post above (not the first comment) to Buffer as a draft — schedule it yourself in Buffer"
+          >
+            {sendingToBuffer ? 'Sending…' : bufferResult?.ok ? '✓ Sent to Buffer' : '→ Send to Buffer as Draft'}
+          </button>
         </div>
+        {bufferResult && !bufferResult.ok && (
+          <p className="text-xs text-red-600">Buffer: {bufferResult.error}</p>
+        )}
       </div>
 
       {/* Right: contacts */}
