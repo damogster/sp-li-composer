@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // sp-composer owns the actual Buffer credentials/client — this just
 // relays to its generic draft endpoint, server-to-server (no CORS issue,
-// no Buffer key duplicated here). Both run on this same Mac via launchd,
-// so localhost is the default; SP_COMPOSER_URL overrides it if needed.
+// no Buffer key duplicated here). sp-composer runs only on the Pi, so
+// SP_COMPOSER_URL in .env.local points there; the localhost default only
+// suits running sp-composer locally with `npm run dev`.
 const SP_COMPOSER_URL = process.env.SP_COMPOSER_URL || 'http://localhost:3004'
 
 export async function POST(req: NextRequest) {

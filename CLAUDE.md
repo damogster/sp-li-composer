@@ -27,10 +27,9 @@ internet.
 - Raspberry Pi — not deployed
 
 ## Linked tools
-- Content Orchestrator (sp-composer) — runs on this same Mac via launchd: `http://localhost:3004` (the
-  header's external link points at the Pi instead, `http://100.103.100.63:3004` — worth double-checking
-  that Tailscale IP is still current if that link ever 404s; `send-to-buffer` below always targets
-  localhost, not that address)
+- Content Orchestrator (sp-composer) — runs only on the Pi now, `http://100.126.88.4:3004` (the Mac
+  instance was retired 2026-10-14 so there's one database). `send-to-buffer` relays there via
+  `SP_COMPOSER_URL` in `.env.local`; the header's "Content Orchestrator" link points there too
 
 ## Key files
 - `lib/db.ts` — SQLite singleton, schema auto-init on first run
@@ -49,7 +48,7 @@ internet.
 ## Environment variables (.env.local)
 - `HUBSPOT_TOKEN` — HubSpot Private App token (scope: crm.objects.contacts.read)
 - `DB_PATH` — absolute path to SQLite file (default: ./composer.db)
-- `SP_COMPOSER_URL` — optional, default `http://localhost:3004`; where `send-to-buffer` relays to
+- `SP_COMPOSER_URL` — where `send-to-buffer` relays to; set to the Pi, `http://100.126.88.4:3004` (the code's `http://localhost:3004` default only suits a local `npm run dev` of sp-composer)
 
 ## Dev
 npm run dev        # port 3003
